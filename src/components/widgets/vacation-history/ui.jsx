@@ -17,7 +17,7 @@ export const ui = () => {
     };
   }, [modal]);
   return (
-    <div className="block__component fade__up w-[100%] min-[1280px]:w-[64%]">
+    <div className="block__component fade__up w-[100%] min-[1280px]:w-[66.5%]">
       <div className="main__info-head">
         <h3>История отпусков</h3>
         <p className="edit" onClick={() => setModal(true)}>
