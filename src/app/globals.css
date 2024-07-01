@@ -3,31 +3,357 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+  --primary-bg: #000;
+  --secondary-bg: #232324;
+  --tertiary-bg: #202021;
+  --modal-bg: #303030;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --accent: #0047bb;
+  --success: #2e7d32;
+  --error: #d32f2f;
+
+  --primary-text: #e1e3e6;
+  --secondary-text: #b0b1b6;
+  --tertiary-text: #76787a;
+
+  --primary-border: #363738;
+
+  --accent-disabled: #424242;
+  --blue-hover: #003182;
+  --blue-focused: #4c7ecf;
+  --transparent-blue-hover: rgba(0, 71, 187, 0.1);
+  --transparent-blue-focused: rgba(0, 71, 187, 0.5);
+  --error-hover: #c62828;
+  --error-focused: #e06d6d;
+  --transparent-error-hover: rgba(211, 47, 47, 0.1);
+  --transparent-error-focused: rgba(211, 47, 47, 0.5);
+  --success-hover: #1b5e20;
+  --success-focused: #6ca46f;
+  --transparent-success-hover: rgba(46, 125, 50, 0.1);
+  --transparent-success-focused: rgba(46, 125, 50, 0.5);
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: var(--primary-bg);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@keyframes slideInFromBottomOpacity {
+  0% {
+    opacity: 0;
+    transform: translateY(-5%);
   }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade__up {
+  animation: slideInFromBottomOpacity 0.8s ease forwards;
+  transition: 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.1;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+.fade__in {
+  animation: fadeIn 1s ease forwards;
+}
+
+@layer components {
+  .container-component {
+    @apply w-[80%] max-[1600px]:w-[90%] max-[1250px]:w-[75%] max-[1024px]:w-[90%] max-[740px]:w-[80%] max-[500px]:w-[90%] h-[auto] mx-auto;
+  }
+  .block__component {
+    @apply p-[30px] max-[550px]:px-[16px] max-[550px]:py-[24px] bg-[--secondary-bg] rounded-[12px] mb-[24px];
+  }
+
+  /** Навбар **/
+  .navbar {
+    @apply w-full py-[24px] flex items-center justify-between;
+  }
+  .logo__wrapper {
+    @apply cursor-pointer;
+  }
+  .menu__wrapper {
+    @apply flex items-center justify-between;
+  }
+  .user__block {
+    @apply py-[6px] px-[16px] mr-[16px] border border-[--primary-border] cursor-pointer rounded-[18px] flex items-center justify-between;
+  }
+  .user__block-avatar {
+    @apply w-[24px] h-[24px] mr-[5px] rounded-[50%];
+  }
+  .burger-menu {
+    @apply cursor-pointer;
+  }
+
+  /** Вернуться к сотрудникам **/
+  .return__wrapper {
+    @apply py-[20px] px-[16px] max-[550px]:px-[10px]  flex items-center gap-[8px] cursor-pointer;
+  }
+  .return__wrapper p {
+    @apply text-[--tertiary-text] text-[14px] uppercase font-semibold;
+  }
+
+  /** Профильные данные **/
+  .user__info-block {
+    @apply flex max-[740px]:flex-col items-center max-[740px]:text-center mb-[30px];
+  }
+  .user__avatar {
+    @apply mr-[48px] mb-[8px] max-[740px]:mr-0;
+  }
+  .user__info h1 {
+    @apply mb-[32px] text-[46px] max-[500px]:text-[24px] max-[500px]:leading-[42px] font-bold text-[--primary-text] leading-[66px];
+  }
+  .user__info p {
+    @apply text-[16px] font-normal text-[--primary-text] mb-[16px];
+  }
+
+  .toggle {
+    @apply max-[740px]:justify-center flex items-center tracking-[1px]	font-semibold text-[13px] uppercase;
+  }
+  .main__info,
+  .vacation {
+    @apply px-[16px] py-[10px] max-[500px]:text-[12px] text-[--secondary-text] border-[--primary-border] border-b-[1px] cursor-pointer transition-all duration-300 ease-in-out;
+  }
+
+  .main__info:hover,
+  .vacation:hover {
+    @apply text-[--primary-text];
+  }
+
+  .main__info-active,
+  .vacation-active {
+    @apply border-[--accent] border-b-[2px] text-[--primary-text];
+  }
+
+  /** Основаная информация **/
+  .main__info-wrapper {
+    @apply w-full h-[auto] flex flex-wrap gap-[16px] items-start justify-between;
+  }
+  .main__info-head {
+    @apply flex items-center justify-between mb-[38px];
+  }
+  .main__info-head h3 {
+    @apply text-[20px] max-[550px]:text-[16px] font-normal text-[--primary-text];
+  }
+  .main__info-head h2 {
+    @apply text-[28px] font-normal text-[--primary-text];
+  }
+  .main__info-head .edit {
+    @apply text-[14px] font-medium text-[--tertiary-text] cursor-pointer;
+  }
+  .main__info-head .percent {
+    @apply text-[14px] font-semibold text-[#D77556];
+  }
+  .main__info-content {
+    @apply flex flex-wrap gap-[24px] justify-between;
+  }
+  .employee-content {
+    @apply flex flex-wrap gap-[24px];
+  }
+  .info__content-item {
+    @apply w-[44%] max-[740px]:w-full max-[1800px]:w-[38%] mb-[26px];
+  }
+  .info__content-item h5 {
+    @apply font-normal text-[16px] text-[--tertiary-text] mb-[14px];
+  }
+  .info__content-item p {
+    @apply font-normal text-[16px] text-[--primary-text];
+  }
+  .sub__item {
+    @apply flex items-center gap-[8px];
+  }
+  .sub__item-team {
+    @apply flex items-center;
+  }
+  .sub__item-team img.overlapping {
+    margin-left: -5%;
+  }
+  .sub__item-team p {
+    @apply ml-[8px] font-normal text-[16px] text-[--primary-text] cursor-pointer;
+  }
+  .sub__item-timeline {
+    @apply flex items-center gap-[8px] text-[--secondary-text];
+  }
+
+  /** Статистика **/
+  .stat__head {
+    @apply flex items-center gap-[8px];
+  }
+  .stat__head h3 {
+    @apply text-[20px] font-normal text-[--primary-text];
+  }
+  .info__mini-block {
+    @apply opacity-0 px-[10px] py-[6px] bg-[--modal-bg] rounded-[4px] font-medium text-[14px] text-[--primary-text] transition-all duration-300 ease-in-out;
+  }
+  .stat__circle {
+    @apply flex items-center justify-center my-[26px];
+  }
+  .circular-progress {
+    @apply w-[200px] h-[200px] relative;
+  }
+  .circle-background,
+  .circle {
+    stroke-dasharray: 283;
+    stroke-dashoffset: 0;
+    transform: rotate(-75deg);
+    transform-origin: 50% 50%;
+  }
+  .circle {
+    stroke-dashoffset: calc(283 - (283 * var(--progress)) / 100);
+    transition: stroke-dashoffset 0.5s, stroke-width 0.5s;
+  }
+  .circle__text {
+    @apply absolute inset-0 flex items-center justify-center flex-col;
+  }
+  .circle__text p {
+    @apply text-[34px] text-[--primary-text];
+  }
+  .circle__text span {
+    @apply text-[14px] font-medium text-[--tertiary-text];
+  }
+
+  .states {
+    @apply w-full mt-[16px];
+  }
+  .one__state {
+    @apply mb-[12px] flex items-center justify-between px-[12px] py-[16px] border-[1px] rounded-[16px] border-[--primary-border] text-[--primary-text] transition-all duration-300 ease-in-out;
+  }
+  .one__state:hover {
+    @apply border-[--primary-text];
+  }
+  .one__state-item {
+    @apply flex items-center gap-[10px] text-[--primary-text];
+  }
+  .one__state-dot {
+    @apply w-[6px] h-[6px] rounded-[50%];
+  }
+
+  /** История отпусков **/
+  .vacation__item {
+    @apply flex items-center justify-between text-[--primary-text] px-[8px] py-[20px] border-b-[1px] border-[--primary-border];
+  }
+  .vacation__item h5 {
+    @apply text-[--secondary-text];
+  }
+  .vacation__item .first {
+    @apply w-[24%];
+  }
+  .vacation__item .last {
+    @apply w-[20%] text-end;
+  }
+
+  .vacation__time {
+    @apply w-[40%] max-[860px]:w-full flex items-center gap-[8px];
+  }
+  .vacation__mobile-item {
+    @apply text-[--primary-text] px-[8px]  py-[20px] border-b-[1px] border-[--primary-border];
+  }
+  .vacation__mobile-item h5 {
+    @apply text-[--secondary-text] mb-[8px];
+  }
+  .vacation__mobile-item p {
+    @apply mb-[16px];
+  }
+
+  /** Инпут **/
+  .form-item {
+    @apply relative;
+  }
+  .form-item input {
+    @apply block w-full px-[14px] py-[12px] text-[14px] text-[--secondary-text] font-medium rounded-[4px] bg-transparent border-[1px] outline-0  transition-all duration-300 ease-in-out;
+  }
+  .form-item input:hover {
+    @apply border-[--primary-text];
+  }
+  .form-item input:focus {
+    @apply border-[--accent];
+  }
+  .form-item label {
+    @apply absolute cursor-text z-10 top-4 left-3 text-[12px] font-normal bg-[--secondary-bg] px-1  transition-all duration-300 ease-in-out;
+  }
+  .form-item input:focus + label,
+  .form-item input:valid + label {
+    @apply text-xs -top-2;
+  }
+  .form-item input:focus + label {
+    @apply text-[--accent];
+  }
+  .error__text {
+    @apply text-[12px] text-[--error] mt-[8px];
+  }
+
+  /** Кнопка **/
+  .btn {
+    @apply relative w-full mt-[10px] rounded-[4px] bg-[--accent] text-center font-semibold text-[13px] uppercase text-[--primary-text] py-[12px] cursor-pointer overflow-hidden transition duration-300;
+  }
+  .btn::after {
+    @apply absolute top-0 left-0 w-full h-full bg-[--transparent-blue-hover] opacity-0 transition-opacity duration-300;
+    content: "";
+  }
+  .btn:hover {
+    @apply bg-[--blue-hover];
+  }
+  .btn:hover::after {
+    @apply opacity-100;
+  }
+
+  /** Модалка **/
+  #modal-container {
+    @apply fixed w-screen h-screen top-0 left-0 flex items-center justify-center pointer-events-none;
+  }
+  .modal__wrapper {
+    @apply fixed z-50 w-screen h-screen top-0 left-0 bg-black bg-opacity-85 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300;
+  }
+  .modal__active {
+    @apply opacity-100 pointer-events-auto transition-opacity duration-300;
+  }
+  .modal__content {
+    @apply relative w-[65%] max-[1350px]:w-[68%] max-[1200px]:w-[74%] max-[1020px]:w-[82%] max-[890px]:w-[90%] max-[720px]:w-[100%] max-[720px]:h-[100vh] h-[auto] p-[32px] rounded-[12px] bg-[--secondary-bg] transition-transform duration-300 transform opacity-0;
+  }
+  .modal_content_active {
+    @apply opacity-100 transition-opacity duration-300;
+  }
+}
+
+/* Базовый синий цвет */
+.button {
+  background-color: #0047bb; /* Базовый синий */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Эффект синего наведения */
+.button:hover {
+  background-color: #003182; /* Более темный синий для наведения */
+}
+
+/* Прозрачный синий слой при наведении */
+.button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 71, 187, 0.5); /* Полупрозрачный синий */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.button:hover::after {
+  opacity: 1;
 }
